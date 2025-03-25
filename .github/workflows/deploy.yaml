@@ -40,6 +40,8 @@ jobs:
         if: matrix.runs-on == 'self-ubuntu-24.04'
         run: |
           # Run the SIF using the stored APPTAINER_CMD command and mpirun
+          pwd 
+          ls -la 
           mpirun -np 4 $APPTAINER_CMD run --sharens $SIF_FILENAME myapp
 
       - name: Run Container on Karolina
