@@ -116,7 +116,7 @@ jobs:
           # Set the SIF filename based on the repository name.
           sif=$(basename ${{ github.repository }}.sif)
           # Pull the Docker image (tagged as 'solution') and convert it to a SIF file.
-          ${{ env.apptainer }} pull -F $sif docker://ghcr.io/${{ github.repository }}:solution
+          ${{ env.apptainer }} pull -F $sif docker://ghcr.io/${{ github.repository }}:1.0
           # Inspect the SIF file to verify its contents.
           ${{ env.apptainer }} inspect $sif
 
@@ -125,4 +125,4 @@ jobs:
           # Determine the SIF filename.
           sif=$(basename ${{ github.repository }}.sif)
           # Push the SIF file to GHCR under the tag 'solution-sif'
-          ${{ env.apptainer }} push $sif oras://ghcr.io/${{ github.repository }}:solution-sif
+          ${{ env.apptainer }} push $sif oras://ghcr.io/${{ github.repository }}:1.0-sif
