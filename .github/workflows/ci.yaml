@@ -97,3 +97,32 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  build-apptainer:
+    runs-on: self-apptainer
+    needs: build-docker
+    env:
+      apptainer: /opt/apptainer/v1.4.0/apptainer/bin/apptainer
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        run: |
+          ${{ env.apptainer }} remote login -u ${{ github.repository_owner }} -p ${{ secrets.GHCR_PAT }} oras://ghcr.io
+
+      - name: Convert Docker Image to Apptainer SIF
+        run: |
+          # Set the SIF filename based on the repository name.
+          sif=$(basename ${{ github.repository }}.sif)
+          # Pull the Docker image (tagged as 'solution') and convert it to a SIF file.
+          ${{ env.apptainer }} pull -F $sif docker://ghcr.io/${{ github.repository }}:solution
+          # Inspect the SIF file to verify its contents.
+          ${{ env.apptainer }} inspect $sif
+
+      - name: Upload Apptainer SIF to GitHub Container Registry
+        run: |
+          # Determine the SIF filename.
+          sif=$(basename ${{ github.repository }}.sif)
+          # Push the SIF file to GHCR under the tag 'solution-sif'
+          ${{ env.apptainer }} push $sif oras://ghcr.io/${{ github.repository }}:solution-sif
