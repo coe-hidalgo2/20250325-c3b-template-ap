@@ -126,9 +126,3 @@ jobs:
           sif=$(basename ${{ github.repository }}.sif)
           # Push the SIF file to GHCR under the tag 'solution-sif'
           ${{ env.apptainer }} push $sif oras://ghcr.io/${{ github.repository }}:1.0-sif
-
-      - name: Trigger Deployment
-        run: |
-          # This step triggers the deploy workflow automatically.
-          # It can be invoked from the build_apptainer job after a successful image push.
-          gh workflow run deploy.yml
