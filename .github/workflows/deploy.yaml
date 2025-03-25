@@ -45,5 +45,5 @@ jobs:
       - name: Run Container on Karolina
         if: matrix.runs-on == 'karolina'
         run: |
-          echo "hello"
-          #bash job_monitor.sh $SIF_FILENAME
+          echo "hello" 
+          #bash job_monitor.sh $SIF_FILENAME 
