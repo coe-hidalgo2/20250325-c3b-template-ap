@@ -1,2 +1,10 @@
 build/
 *.sif
+node_modules/
+package-lock.json
+public/
+cache/
+reframe/
+reports/
+outputs/
+.venv/
