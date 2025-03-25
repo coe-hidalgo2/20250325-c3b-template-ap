@@ -32,7 +32,7 @@ jobs:
       - name: PULL Apptainer SIF
         run: |
           # Pull the SIF file from GHCR
-          $APPTAINER_CMD pull -F $SIF_FILENAME oras://ghcr.io/${{ github.repository }}:1.0-sif
+          $APPTAINER_CMD pull -F $SIF_FILENAME oras://ghcr.io/${{ github.repository }}:2.0-sif
           # inspect the SIF file
           $APPTAINER_CMD inspect $SIF_FILENAME
 
@@ -40,8 +40,6 @@ jobs:
         if: matrix.runs-on == 'self-ubuntu-24.04'
         run: |
           # Run the SIF using the stored APPTAINER_CMD command and mpirun
-          pwd 
-          ls -la 
           mpirun -np 4 $APPTAINER_CMD run --sharens $SIF_FILENAME myapp
 
       - name: Run Container on Karolina
